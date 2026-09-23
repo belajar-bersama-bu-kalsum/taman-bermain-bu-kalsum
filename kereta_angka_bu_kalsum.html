@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kereta Angka — Belajar Bersama Bu Kalsum</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,system-ui,sans-serif;background:linear-gradient(#c8efff,#fff5d5);color:#17365d}
+.wrap{max-width:920px;margin:auto;padding:18px}.card{background:#fff;border-radius:30px;padding:20px;text-align:center;box-shadow:0 9px 0 #83d1a6}
+h1{margin:0;color:#ed4b89;font-size:clamp(35px,7vw,58px)}.sub{font-size:19px;font-weight:800;margin:7px}
+.task{display:inline-block;background:#fff0a9;padding:11px 22px;border-radius:20px;font-size:26px;font-weight:900;margin:8px}
+.scene{position:relative;height:400px;border-radius:28px;overflow:hidden;background:linear-gradient(#ccefff 0 64%,#a9df79 64% 82%,#d2b486 82%);border:4px solid #9ed9ef;margin-top:12px}
+.cloud{position:absolute;font-size:50px;opacity:.75}.c1{left:7%;top:30px}.c2{right:8%;top:70px}.station{position:absolute;right:3%;bottom:73px;font-size:62px}.track{position:absolute;left:0;right:0;bottom:40px;height:12px;background:#555}.track:after{content:"||||||||||||||||||||||||||||||||";position:absolute;left:0;right:0;top:-8px;color:#795548;letter-spacing:15px;font-weight:bold;overflow:hidden}
+.train{position:absolute;left:4%;bottom:66px;display:flex;align-items:flex-end;gap:5px;transition:left .65s ease}
+.engine{font-size:70px}.wagon{width:92px;height:67px;border-radius:14px 14px 8px 8px;background:#ffd55d;border:4px solid #e6a936;display:flex;align-items:center;justify-content:center;font-size:31px;font-weight:900;cursor:pointer;position:relative}
+.wagon:after{content:"● ●";position:absolute;bottom:-18px;font-size:19px;color:#333}.options{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:15px}.num{border:0;border-radius:18px;padding:13px 23px;font-size:30px;font-weight:900;background:#eaf8ff;color:#175b94;box-shadow:0 5px 0 #b0d9ea;cursor:pointer}
+.slot{display:inline-flex;min-width:70px;height:54px;align-items:center;justify-content:center;border:4px dashed #ed76a5;border-radius:15px;background:#fff;font-size:30px}
+.msg{height:40px;font-size:25px;font-weight:900}.badge{font-weight:900;margin:8px}.btn{border:0;border-radius:16px;padding:11px 18px;font-size:18px;font-weight:900;background:#ffd65d;cursor:pointer}
+.shake{animation:s .35s}@keyframes s{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}footer{text-align:center;font-weight:800;margin:23px}
+</style><style id="homeNavStyle">#homeNav{position:fixed;left:14px;bottom:14px;z-index:9999;background:#fff;border:3px solid #ef6b9d;border-radius:18px;padding:10px 14px;text-decoration:none;color:#c93672;font:800 15px Arial,sans-serif;box-shadow:0 4px 10px #0002}#homeNav:hover{transform:translateY(-2px)}</style></head>
+<body><div class="wrap"><div class="card">
+<h1>🚂 Kereta Angka</h1><div class="sub">Cari angka yang hilang agar kereta bisa berangkat!</div>
+<div class="task">Lengkapi pola angka</div><div class="badge" id="badge">Perjalanan 1 dari 6 ⭐ 0</div>
+<div class="scene"><div class="cloud c1">☁️</div><div class="cloud c2">☁️</div><div class="station">🏠</div><div class="track"></div>
+<div class="train" id="train"><div class="engine">🚂</div><div class="wagon" id="w1"></div><div class="wagon" id="w2"></div><div class="wagon" id="w3"></div><div class="wagon" id="w4"></div></div></div>
+<div class="options" id="options"></div><div class="msg" id="msg"></div><button class="btn" onclick="restart()">↻ Mulai Lagi</button>
+</div><footer>Belajar Bersama Bu Kalsum<br><small>Pola bilangan 1–20 • Belajar hari ini, hebat setiap hari.</small></footer></div>
+<script>
+let round=1,stars=0,answer=0,lock=false;const wag=[w1,w2,w3,w4];
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+function make(){
+ lock=false;train.style.left='4%';msg.textContent='';
+ let step=Math.random()<.55?1:2, start=1+Math.floor(Math.random()*(20-step*3));
+ let seq=[start,start+step,start+step*2,start+step*3], miss=Math.floor(Math.random()*4);answer=seq[miss];
+ wag.forEach((x,i)=>x.innerHTML=i===miss?'<span class="slot">?</span>':seq[i]);
+ let set=new Set([answer]);while(set.size<4){let n=Math.max(1,Math.min(20,answer+Math.floor(Math.random()*7)-3));set.add(n)}
+ options.innerHTML='';shuffle([...set]).forEach(n=>{let b=document.createElement('button');b.className='num';b.textContent=n;b.onclick=()=>pick(n,b,miss);options.appendChild(b)});update()
+}
+function pick(n,b,miss){
+ if(lock)return;
+ if(n===answer){lock=true;stars++;wag[miss].textContent=n;msg.textContent='Benar! Kereta berangkat! 🚂💨';train.style.left='38%';setTimeout(()=>{if(round>=6){msg.textContent='Sampai tujuan! Kamu hebat! 🏆';train.style.left='55%'}else{round++;make()}},1100)}
+ else{b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');msg.textContent='Belum tepat. Coba angka lain 😊'}update()
+}
+function update(){badge.textContent='Perjalanan '+round+' dari 6   ⭐ '+stars}
+function restart(){round=1;stars=0;make()}restart();
+</script><a id="homeNav" href="index.html">🏠 Taman Bermain</a></body></html>

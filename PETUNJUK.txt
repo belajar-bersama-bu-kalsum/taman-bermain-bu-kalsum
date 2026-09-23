@@ -1,0 +1,12 @@
+TAMAN BERMAIN — BELAJAR BERSAMA BU KALSUM
+
+Cara membuka di laptop:
+1. Buka folder ini.
+2. Klik dua kali file index.html.
+3. Halaman Taman Bermain akan terbuka di browser.
+4. Pilih permainan.
+5. Tombol “Taman Bermain” di kiri bawah setiap game akan kembali ke halaman utama.
+
+PENTING:
+- Jangan memindahkan satu file game sendirian dari folder ini karena tautan antargame memakai file yang berada dalam folder yang sama.
+- Untuk dipasang online, unggah seluruh isi folder ini (atau gunakan file ZIP yang disediakan).

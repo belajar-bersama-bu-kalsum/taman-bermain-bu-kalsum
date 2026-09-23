@@ -1,0 +1,56 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Taman Bermain — Belajar Bersama Bu Kalsum</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,system-ui,sans-serif;color:#17365d;background:linear-gradient(#bdeaff 0,#eafaff 32%,#fff6d7 100%);min-height:100vh}
+.hero{text-align:center;padding:34px 18px 20px;position:relative;overflow:hidden}.hero:before{content:"☁️  ⭐  ☁️  🌈  ☀️";position:absolute;inset:10px 0 auto;font-size:28px;opacity:.7;letter-spacing:18px;pointer-events:none}
+h1{margin:32px 0 6px;color:#e94483;font-size:clamp(38px,7vw,68px);text-shadow:0 3px #fff}.tag{font-size:clamp(17px,3vw,23px);font-weight:900}.intro{max-width:720px;margin:12px auto 0;font-size:16px;font-weight:700}
+.filters{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px}.filter{border:0;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer;background:#fff;box-shadow:0 3px 0 #bdd9e5;color:#245173}.filter.on{background:#ffd45f;color:#5b4300}
+.grid{max-width:1050px;margin:auto;padding:12px 18px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.game{display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit;background:#fff;border-radius:25px;padding:16px;min-height:135px;box-shadow:0 7px 0 #83cfa0;transition:.18s}.game:hover{transform:translateY(-4px)}.ico{min-width:78px;height:78px;border-radius:22px;background:#fff0bd;display:grid;place-items:center;font-size:43px}.gameText{text-align:left}h3{margin:0 0 6px;color:#d93d78;font-size:22px}p{margin:0 0 9px;line-height:1.35;font-weight:700}span{display:inline-block;background:#e9f8ff;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900}
+.note{max-width:800px;margin:0 auto 30px;background:#fff;padding:15px 20px;border-radius:22px;text-align:center;font-weight:800;box-shadow:0 5px 0 #ffd469}
+footer{text-align:center;background:#fff8e6;padding:24px;font-weight:900;color:#315c6f}footer b{color:#e94483;font-size:20px}
+</style></head><body>
+<section class="hero"><h1>🎮 Taman Bermain</h1><div class="tag">Belajar Bersama Bu Kalsum</div><div class="intro">Pilih permainan yang kamu suka. Yuk, belajar sambil bermain! 🌟</div></section>
+<div class="filters"><button class="filter on" onclick="filterGames('Semua',this)">Semua</button><button class="filter" onclick="filterGames('Literasi',this)">🔤 Literasi</button><button class="filter" onclick="filterGames('Numerasi',this)">🔢 Numerasi</button><button class="filter" onclick="filterGames('Konsentrasi',this)">🧩 Konsentrasi</button><button class="filter" onclick="filterGames('Penalaran',this)">💡 Penalaran</button></div>
+<main class="grid"><a class="game" href="mesin_suku_kata_bu_kalsum.html" data-cat="Literasi">
+      <div class="ico">🔤</div><div class="gameText"><h3>Mesin Suku Kata</h3><p>Pilih huruf dan vokal, lalu bunyikan suku katanya.</p><span>Literasi</span></div>
+    </a><a class="game" href="permainan_susun_kata_bu_kalsum.html" data-cat="Literasi">
+      <div class="ico">🧩</div><div class="gameText"><h3>Susun Kata</h3><p>Susun dua suku kata menjadi kata yang benar.</p><span>Literasi</span></div>
+    </a><a class="game" href="cari_rumah_huruf_bu_kalsum.html" data-cat="Literasi">
+      <div class="ico">🏠</div><div class="gameText"><h3>Cari Rumah Huruf</h3><p>Masukkan gambar ke rumah huruf awal yang tepat.</p><span>Literasi</span></div>
+    </a><a class="game" href="tangkap_huruf_bergerak_bu_kalsum.html" data-cat="Literasi">
+      <div class="ico">✨</div><div class="gameText"><h3>Tangkap Huruf</h3><p>Tangkap huruf target yang bergerak di layar.</p><span>Literasi</span></div>
+    </a><a class="game" href="pecahkan_balon_kata_bu_kalsum.html" data-cat="Literasi">
+      <div class="ico">🎈</div><div class="gameText"><h3>Pecahkan Balon Kata</h3><p>Pecahkan balon kata sesuai huruf awal.</p><span>Literasi</span></div>
+    </a><a class="game" href="puzzle_suku_kata_bu_kalsum.html" data-cat="Literasi">
+      <div class="ico">🧩</div><div class="gameText"><h3>Puzzle Suku Kata</h3><p>Seret potongan suku kata ke tempat yang tepat.</p><span>Literasi</span></div>
+    </a><a class="game" href="tangkap_jawaban_penjumlahan_bu_kalsum.html" data-cat="Numerasi">
+      <div class="ico">➕</div><div class="gameText"><h3>Tangkap Jawaban</h3><p>Tangkap hasil penjumlahan 1–20 yang benar.</p><span>Numerasi</span></div>
+    </a><a class="game" href="seberangi_sungai_angka_bu_kalsum.html" data-cat="Numerasi">
+      <div class="ico">🌊</div><div class="gameText"><h3>Seberangi Sungai Angka</h3><p>Jawab pengurangan untuk menyeberangi sungai.</p><span>Numerasi</span></div>
+    </a><a class="game" href="kereta_angka_bu_kalsum.html" data-cat="Numerasi">
+      <div class="ico">🚂</div><div class="gameText"><h3>Kereta Angka</h3><p>Lengkapi pola bilangan pada gerbong kereta.</p><span>Numerasi</span></div>
+    </a><a class="game" href="labirin_angka_bu_kalsum.html" data-cat="Numerasi">
+      <div class="ico">🌀</div><div class="gameText"><h3>Labirin Angka</h3><p>Temukan jalan dengan menjawab hitungan.</p><span>Numerasi</span></div>
+    </a><a class="game" href="pasangan_angka_bu_kalsum.html" data-cat="Numerasi">
+      <div class="ico">🔢</div><div class="gameText"><h3>Pasangan Angka</h3><p>Pasangkan angka dengan jumlah gambar yang sesuai.</p><span>Numerasi</span></div>
+    </a><a class="game" href="toko_buah_ceria_bu_kalsum.html" data-cat="Numerasi">
+      <div class="ico">🛒</div><div class="gameText"><h3>Toko Buah Ceria</h3><p>Masukkan jumlah buah sesuai pesanan.</p><span>Numerasi</span></div>
+    </a><a class="game" href="pasangan_ceria_bu_kalsum.html" data-cat="Konsentrasi">
+      <div class="ico">🃏</div><div class="gameText"><h3>Pasangan Ceria</h3><p>Temukan pasangan gambar dan kata.</p><span>Konsentrasi</span></div>
+    </a><a class="game" href="puzzle_gambar_6_potong_bu_kalsum.html" data-cat="Konsentrasi">
+      <div class="ico">🧩</div><div class="gameText"><h3>Puzzle Gambar</h3><p>Susun enam potongan menjadi gambar utuh.</p><span>Konsentrasi</span></div>
+    </a><a class="game" href="sortir_keranjang_bu_kalsum.html" data-cat="Konsentrasi">
+      <div class="ico">🧺</div><div class="gameText"><h3>Sortir Keranjang</h3><p>Kelompokkan benda ke keranjang yang tepat.</p><span>Konsentrasi</span></div>
+    </a><a class="game" href="urutkan_ceritanya_bu_kalsum.html" data-cat="Penalaran">
+      <div class="ico">📖</div><div class="gameText"><h3>Urutkan Ceritanya</h3><p>Susun tiga kejadian sesuai urutan.</p><span>Penalaran</span></div>
+    </a><a class="game" href="mana_yang_berbeda_bu_kalsum.html" data-cat="Penalaran">
+      <div class="ico">🔍</div><div class="gameText"><h3>Mana yang Berbeda?</h3><p>Cari satu gambar yang berbeda dari lainnya.</p><span>Penalaran</span></div>
+    </a><a class="game" href="ikuti_polanya_bu_kalsum.html" data-cat="Penalaran">
+      <div class="ico">🎨</div><div class="gameText"><h3>Ikuti Polanya</h3><p>Temukan gambar berikutnya dalam pola.</p><span>Penalaran</span></div>
+    </a></main>
+<div class="note">💡 Cocok untuk belajar di kelas, waktu senggang, tantangan sebelum pulang, atau bermain bersama orang tua di rumah.</div>
+<footer><b>Belajar Bersama Bu Kalsum</b><br>Belajar hari ini, hebat setiap hari.</footer>
+<script>
+function filterGames(cat,b){document.querySelectorAll('.filter').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.game').forEach(g=>g.style.display=(cat==='Semua'||g.dataset.cat===cat)?'flex':'none')}
+</script></body></html>

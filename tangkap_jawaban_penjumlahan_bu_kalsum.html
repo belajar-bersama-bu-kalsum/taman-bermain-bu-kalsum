@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tangkap Jawaban — Belajar Bersama Bu Kalsum</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,system-ui,sans-serif;background:linear-gradient(#c4edff,#fff3c9);color:#17365d;min-height:100vh}
+.wrap{max-width:900px;margin:auto;padding:18px}.card{background:white;border-radius:30px;padding:20px;text-align:center;box-shadow:0 9px 0 #82d1a7}
+h1{margin:0;color:#ef4d8c;font-size:clamp(35px,7vw,58px)}.sub{font-size:19px;font-weight:800;margin:7px}
+.question{display:inline-block;background:#fff1ad;border-radius:22px;padding:13px 27px;margin:9px;font-size:clamp(35px,8vw,58px);font-weight:900}
+.top{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:7px}.badge{background:#eaf8ff;border-radius:15px;padding:9px 14px;font-weight:900}
+.game{position:relative;height:430px;overflow:hidden;border:4px solid #9ed9ef;border-radius:26px;background:linear-gradient(#dff5ff 0 72%,#bfe8a7 72%);margin-top:12px;touch-action:manipulation}
+.ball{position:absolute;width:74px;height:74px;border-radius:50% 50% 46% 46%;display:flex;align-items:center;justify-content:center;font-size:29px;font-weight:900;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.14);will-change:transform}
+.ball:after{content:"";position:absolute;bottom:-8px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid currentColor;opacity:.35}
+.msg{height:42px;font-size:25px;font-weight:900;margin:12px 0 2px}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.action{border:0;border-radius:17px;padding:12px 18px;font-size:18px;font-weight:900;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.13)}
+.new{background:#ffd65d}.sound{background:#78d8a1}footer{text-align:center;font-weight:800;margin:24px}
+</style><style id="homeNavStyle">#homeNav{position:fixed;left:14px;bottom:14px;z-index:9999;background:#fff;border:3px solid #ef6b9d;border-radius:18px;padding:10px 14px;text-decoration:none;color:#c93672;font:800 15px Arial,sans-serif;box-shadow:0 4px 10px #0002}#homeNav:hover{transform:translateY(-2px)}</style></head>
+<body>
+<div class="wrap"><div class="card">
+<h1>🎈 Tangkap Jawaban!</h1>
+<div class="sub">Hitung, lalu kejar balon dengan jawaban yang benar.</div>
+<div class="question" id="question">7 + 5 = ?</div>
+<div class="top"><div class="badge" id="stars">⭐ Bintang: 0</div><div class="badge" id="round">Soal: 1</div></div>
+<div class="game" id="game"></div>
+<div class="msg" id="msg"></div>
+<div class="actions"><button class="action new" onclick="newRound()">🎲 Soal Baru</button><button class="action sound" onclick="sayQuestion()">🔊 Dengarkan Soal</button></div>
+</div><footer>Belajar Bersama Bu Kalsum<br><small>Penjumlahan 1–20 • Belajar hari ini, hebat setiap hari.</small></footer></div>
+<script>
+const game=document.getElementById('game');
+const colors=['#ffd0df','#cdeeff','#ffe79a','#d7f2ce','#e6d8ff','#ffd5b5'];
+let balls=[],ans=12,a=7,b=5,stars=0,round=0,locked=false,last=0;
+function shuffle(x){return [...x].sort(()=>Math.random()-.5)}
+function problem(){
+ ans=2+Math.floor(Math.random()*19);
+ a=1+Math.floor(Math.random()*(ans-1));b=ans-a;
+}
+function options(){
+ let s=new Set([ans]);
+ while(s.size<6){let n=Math.max(1,Math.min(20,ans+(Math.floor(Math.random()*9)-4)));s.add(n)}
+ return shuffle([...s]);
+}
+function newRound(){
+ round++;locked=false;document.getElementById('msg').textContent='';problem();
+ document.getElementById('question').textContent=`${a} + ${b} = ?`;
+ balls.forEach(x=>x.el.remove());balls=[];
+ options().forEach((n,i)=>{
+  let d=document.createElement('div');d.className='ball';d.textContent=n;d.style.background=colors[i];game.appendChild(d);
+  let maxX=game.clientWidth-82,maxY=game.clientHeight-82;
+  let o={el:d,n,x:Math.random()*maxX,y:Math.random()*maxY,
+   vx:(Math.random()<.5?-1:1)*(48+Math.random()*70),vy:(Math.random()<.5?-1:1)*(35+Math.random()*55)};
+  d.onclick=()=>pick(o);balls.push(o);
+ });update();
+}
+function pick(o){
+ if(locked)return;
+ if(o.n===ans){locked=true;stars++;o.el.textContent='⭐';o.vx=o.vy=0;o.el.style.background='#d8f6c9';
+ document.getElementById('msg').textContent='Benar! Hebat! 🎉';update();setTimeout(newRound,1000)}
+ else{o.vx*=-1.35;o.vy*=-1.35;o.el.style.opacity=.35;document.getElementById('msg').textContent='Belum tepat. Hitung lagi 😊';setTimeout(()=>o.el.style.opacity=1,400)}
+}
+function sayQuestion(){let u=new SpeechSynthesisUtterance(`${a} tambah ${b} sama dengan berapa?`);u.lang='id-ID';u.rate=.72;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function animate(t){
+ if(!last)last=t;let dt=Math.min((t-last)/1000,.03);last=t;
+ let maxX=game.clientWidth-82,maxY=game.clientHeight-82;
+ balls.forEach(o=>{o.x+=o.vx*dt;o.y+=o.vy*dt;
+ if(o.x<=0){o.x=0;o.vx=Math.abs(o.vx)} if(o.x>=maxX){o.x=maxX;o.vx=-Math.abs(o.vx)}
+ if(o.y<=0){o.y=0;o.vy=Math.abs(o.vy)} if(o.y>=maxY){o.y=maxY;o.vy=-Math.abs(o.vy)}
+ o.el.style.transform=`translate(${o.x}px,${o.y}px)`});
+ requestAnimationFrame(animate);
+}
+function update(){document.getElementById('stars').textContent='⭐ Bintang: '+stars;document.getElementById('round').textContent='Soal: '+round}
+newRound();requestAnimationFrame(animate);
+</script><a id="homeNav" href="index.html">🏠 Taman Bermain</a></body></html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cari Rumah Huruf — Belajar Bersama Bu Kalsum</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial,system-ui,sans-serif;background:linear-gradient(#c8efff,#fff6d9);color:#17365d;min-height:100vh}
+.wrap{max-width:900px;margin:auto;padding:18px}.card{background:#fff;border-radius:30px;padding:20px;text-align:center;box-shadow:0 9px 0 #82d1a7}
+h1{margin:0;color:#ed4b89;font-size:clamp(35px,7vw,60px)}.sub{font-size:20px;font-weight:800;margin:7px 0 14px}
+.score{display:inline-block;background:#fff2b8;padding:9px 16px;border-radius:16px;font-weight:900;font-size:18px}
+.item{font-size:92px;margin:15px 0 0}.word{font-size:27px;font-weight:900;margin:3px 0 15px}
+.houses{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.house{border:0;border-radius:24px;padding:14px 6px;background:#eaf8ff;box-shadow:0 5px 0 #acd8ec;cursor:pointer;color:#174d7a}
+.roof{font-size:34px}.letter{font-size:43px;font-weight:900}.house:active{transform:translateY(4px);box-shadow:0 1px 0 #acd8ec}
+.msg{height:42px;font-size:26px;font-weight:900;margin:16px 0 4px}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.action{border:0;border-radius:17px;padding:12px 18px;font-size:18px;font-weight:900;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.13)}
+.next{background:#76d79f}.again{background:#ffd65d}.progress{font-weight:800;margin-top:16px}footer{text-align:center;font-weight:800;margin:24px}
+@media(max-width:600px){.houses{grid-template-columns:repeat(2,1fr)}.item{font-size:78px}}
+</style>
+<style id="homeNavStyle">#homeNav{position:fixed;left:14px;bottom:14px;z-index:9999;background:#fff;border:3px solid #ef6b9d;border-radius:18px;padding:10px 14px;text-decoration:none;color:#c93672;font:800 15px Arial,sans-serif;box-shadow:0 4px 10px #0002}#homeNav:hover{transform:translateY(-2px)}</style></head>
+<body>
+<div class="wrap"><div class="card">
+<h1>🏡 Cari Rumah Huruf</h1>
+<div class="sub">Lihat gambar. Tekan rumah dengan huruf awal yang benar!</div>
+<div class="score" id="score">⭐ Bintang: 0</div>
+<div class="item" id="pic">🍍</div><div class="word" id="word">nanas</div>
+<div class="houses" id="houses"></div>
+<div class="msg" id="msg"></div>
+<div class="actions">
+<button class="action again" onclick="restart()">↻ Mulai Lagi</button>
+<button class="action next" onclick="nextItem()">Berikutnya ➜</button>
+</div>
+<div class="progress" id="progress"></div>
+</div>
+<footer>Belajar Bersama Bu Kalsum<br><small>Belajar hari ini, hebat setiap hari.</small></footer></div>
+<script>
+const items=[
+ {word:'mata',pic:'👁️',letter:'m'},{word:'bola',pic:'⚽',letter:'b'},
+ {word:'timun',pic:'🥒',letter:'t'},{word:'susu',pic:'🥛',letter:'s'},
+ {word:'lebah',pic:'🐝',letter:'l'},{word:'kaki',pic:'🦶',letter:'k'},
+ {word:'panda',pic:'🐼',letter:'p'},{word:'nanas',pic:'🍍',letter:'n'}
+];
+const letters=['m','b','t','s','l','k','p','n'];
+let order=[],pos=0,stars=0,answered=false;
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function setup(){order=shuffle(items);pos=0;stars=0;show()}
+function show(){
+ answered=false;document.getElementById('msg').textContent='';
+ let x=order[pos];document.getElementById('pic').textContent=x.pic;document.getElementById('word').textContent=x.word;
+ let opts=shuffle([x.letter,...shuffle(letters.filter(l=>l!==x.letter)).slice(0,3)]);
+ let h=document.getElementById('houses');h.innerHTML='';
+ opts.forEach(l=>{let b=document.createElement('button');b.className='house';b.innerHTML='<div class="roof">🏠</div><div class="letter">'+l+'</div>';
+ b.onclick=()=>choose(l,b);h.appendChild(b)});
+ update();
+}
+function choose(l,b){
+ if(answered)return; let x=order[pos];
+ if(l===x.letter){answered=true;stars++;b.style.background='#dff8df';document.getElementById('msg').textContent='Benar! Hebat! 🎉';
+  const u=new SpeechSynthesisUtterance(x.letter+' untuk '+x.word);u.lang='id-ID';u.rate=.7;speechSynthesis.cancel();speechSynthesis.speak(u);
+ }else{b.style.background='#ffe3e3';document.getElementById('msg').textContent='Belum tepat. Coba rumah lain 😊'}
+ update();
+}
+function nextItem(){if(pos<order.length-1){pos++;show()}else{document.getElementById('msg').textContent='Selesai! Kamu hebat! 🌟';}}
+function restart(){setup()}
+function update(){document.getElementById('score').textContent='⭐ Bintang: '+stars;document.getElementById('progress').textContent='Soal '+(pos+1)+' dari '+order.length}
+setup();
+</script>
+<a id="homeNav" href="index.html">🏠 Taman Bermain</a></body></html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pasangan Ceria — Belajar Bersama Bu Kalsum</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,system-ui,sans-serif;background:linear-gradient(#c9efff,#fff5d6);color:#17365d}
+.wrap{max-width:850px;margin:auto;padding:18px}.card{background:white;border-radius:30px;padding:20px;text-align:center;box-shadow:0 9px 0 #83d1a6}
+h1{margin:0;color:#ed4b89;font-size:clamp(34px,7vw,58px)}.sub{font-size:19px;font-weight:800;margin:7px}.info{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:10px}.badge{background:#eaf8ff;padding:9px 15px;border-radius:15px;font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:650px;margin:18px auto}
+.memory{height:115px;perspective:700px;cursor:pointer}.inner{width:100%;height:100%;position:relative;transition:transform .45s;transform-style:preserve-3d}.memory.open .inner,.memory.done .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:20px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;box-shadow:0 5px 0 rgba(0,0,0,.14)}
+.front{background:linear-gradient(#ff8fbd,#f65e9b);font-size:43px;color:white}.back{background:#fff4c9;border:4px solid #ffd36a;transform:rotateY(180deg);font-size:27px;font-weight:900;padding:8px}.back.pic{font-size:57px}
+.memory.done .back{background:#dcf7d3;border-color:#8dd379}.msg{height:42px;font-size:25px;font-weight:900;margin:10px}.btn{border:0;border-radius:17px;padding:12px 18px;font-size:18px;font-weight:900;background:#ffd65d;cursor:pointer;box-shadow:0 5px 0 #d9ae35}
+footer{text-align:center;font-weight:800;margin:22px}@media(max-width:600px){.grid{gap:8px}.memory{height:90px}.back{font-size:21px}.back.pic{font-size:45px}}
+</style><style id="homeNavStyle">#homeNav{position:fixed;left:14px;bottom:14px;z-index:9999;background:#fff;border:3px solid #ef6b9d;border-radius:18px;padding:10px 14px;text-decoration:none;color:#c93672;font:800 15px Arial,sans-serif;box-shadow:0 4px 10px #0002}#homeNav:hover{transform:translateY(-2px)}</style></head>
+<body><div class="wrap"><div class="card">
+<h1>🧠 Pasangan Ceria</h1><div class="sub">Buka dua kartu. Pasangkan gambar dengan katanya!</div>
+<div class="info"><div class="badge" id="pairs">Pasangan: 0 / 6</div><div class="badge" id="moves">Percobaan: 0</div><div class="badge" id="stars">⭐ 0</div></div>
+<div class="grid" id="grid"></div><div class="msg" id="msg"></div><button class="btn" onclick="start()">🔄 Acak Lagi</button>
+</div><footer>Belajar Bersama Bu Kalsum<br><small>Literasi awal • Belajar hari ini, hebat setiap hari.</small></footer></div>
+<script>
+const bank=[
+ {id:'bola',word:'bola',pic:'⚽'},{id:'susu',word:'susu',pic:'🥛'},{id:'buku',word:'buku',pic:'📖'},
+ {id:'nanas',word:'nanas',pic:'🍍'},{id:'lebah',word:'lebah',pic:'🐝'},{id:'kaki',word:'kaki',pic:'🦶'},
+ {id:'pita',word:'pita',pic:'🎀'},{id:'timun',word:'timun',pic:'🥒'}
+];
+let first=null,second=null,lock=false,found=0,moves=0,stars=0;
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+function start(){
+ first=second=null;lock=false;found=moves=stars=0;msg.textContent='';
+ let chosen=shuffle(bank).slice(0,6),cards=[];
+ chosen.forEach(x=>{cards.push({id:x.id,type:'pic',value:x.pic});cards.push({id:x.id,type:'word',value:x.word})});
+ cards=shuffle(cards);grid.innerHTML='';
+ cards.forEach((x,i)=>{let c=document.createElement('div');c.className='memory';c.dataset.id=x.id;c.dataset.type=x.type;
+ c.innerHTML='<div class="inner"><div class="face front">?</div><div class="face back '+(x.type==='pic'?'pic':'')+'">'+x.value+'</div></div>';
+ c.onclick=()=>flip(c);grid.appendChild(c)});update()
+}
+function flip(c){
+ if(lock||c.classList.contains('open')||c.classList.contains('done'))return;c.classList.add('open');
+ if(!first){first=c;return}second=c;moves++;lock=true;
+ if(first.dataset.id===second.dataset.id&&first.dataset.type!==second.dataset.type){
+   first.classList.add('done');second.classList.add('done');found++;stars++;msg.textContent='Cocok! Hebat! 🌟';first=second=null;lock=false;update();
+   if(found===6)setTimeout(()=>msg.textContent='Hore! Semua pasangan ditemukan! 🏆',300);
+ }else{msg.textContent='Belum cocok. Ingat tempat kartunya 😊';setTimeout(()=>{first.classList.remove('open');second.classList.remove('open');first=second=null;lock=false;msg.textContent=''},850);update()}
+}
+function update(){pairs.textContent='Pasangan: '+found+' / 6';moves.textContent='Percobaan: '+moves;stars.textContent='⭐ '+stars}
+start();
+</script><a id="homeNav" href="index.html">🏠 Taman Bermain</a></body></html>

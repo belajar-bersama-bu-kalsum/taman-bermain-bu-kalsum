@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mesin Suku Kata — Belajar Bersama Bu Kalsum</title>
+<style>
+:root{--ink:#17335c;--pink:#ff5c98;--yellow:#ffd85c;--green:#72d49a;--blue:#78c9ff;--cream:#fffaf0}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,system-ui,sans-serif;background:linear-gradient(#bfe9ff,#fff7df);color:var(--ink);min-height:100vh}
+.wrap{max-width:850px;margin:auto;padding:22px}
+header{text-align:center;background:white;border:5px solid #fff;border-radius:28px;padding:18px;box-shadow:0 8px 0 #82cbe9}
+h1{margin:0;font-size:clamp(32px,7vw,62px);color:#ed4384}
+.tag{font-size:clamp(16px,3vw,23px);font-weight:700;margin-top:7px}
+.machine{margin-top:24px;background:#fff;border-radius:28px;padding:22px;box-shadow:0 9px 0 #86d5aa;text-align:center}
+.label{font-size:20px;font-weight:800;margin:10px}
+.row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+button.letter{width:62px;height:62px;border:0;border-radius:18px;font-size:34px;font-weight:900;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.14);background:#eaf7ff;color:#145cb6}
+button.letter.v{background:#fff0f6;color:#df347a}
+button.letter.active{outline:5px solid var(--yellow);transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.14)}
+.result{margin:26px auto 18px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.tile{min-width:105px;padding:14px 18px;border-radius:20px;background:#f4fbff;border:4px solid #78c9ff;font-size:58px;font-weight:900}
+.plus,.eq{font-size:38px;font-weight:900}
+.answer{min-width:160px;background:#fff6bd;border-color:#ffbe45}
+.read{font-size:24px;font-weight:800;margin:10px}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+.action{border:0;border-radius:18px;padding:14px 22px;font-size:19px;font-weight:900;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.15)}
+.random{background:#ffcc4d;color:#5a3900}.speak{background:#72d49a;color:#123f2a}
+.challenge{margin-top:20px;padding:16px;border:3px dashed #ff7fab;border-radius:20px;background:#fff7fb;font-weight:800;font-size:20px}
+footer{text-align:center;margin:28px 0 10px;font-weight:800}
+small{display:block;font-weight:600;margin-top:5px}
+</style>
+<style id="homeNavStyle">#homeNav{position:fixed;left:14px;bottom:14px;z-index:9999;background:#fff;border:3px solid #ef6b9d;border-radius:18px;padding:10px 14px;text-decoration:none;color:#c93672;font:800 15px Arial,sans-serif;box-shadow:0 4px 10px #0002}#homeNav:hover{transform:translateY(-2px)}</style></head>
+<body>
+<div class="wrap">
+<header>
+<h1>Mesin Suku Kata</h1>
+<div class="tag">Belajar Bersama Bu Kalsum</div>
+</header>
+
+<main class="machine">
+<div class="label">Pilih huruf awal</div>
+<div class="row" id="cons"></div>
+
+<div class="label">Pilih huruf vokal</div>
+<div class="row" id="vowels"></div>
+
+<div class="result">
+<div class="tile" id="cTile">m</div><div class="plus">+</div>
+<div class="tile" id="vTile">a</div><div class="eq">=</div>
+<div class="tile answer" id="answer">ma</div>
+</div>
+<div class="read" id="read">Baca: ma</div>
+
+<div class="actions">
+<button class="action random" id="random">🎲 Acak Tantangan</button>
+<button class="action speak" id="speak">🔊 Dengarkan</button>
+</div>
+<div class="challenge" id="challenge">Tantangan: coba baca <b>ma</b>!</div>
+</main>
+
+<footer>Belajar hari ini, hebat setiap hari.
+<small>Media membaca awal — dapat digunakan di laptop atau HP.</small>
+</footer>
+</div>
+<script>
+const consonants=['m','b','t','s','l','k','p','n'];
+const vowels=['a','i','u','e','o'];
+let c='m',v='a';
+
+function makeButtons(arr,root,cls,choose){
+ arr.forEach(x=>{
+   const b=document.createElement('button');
+   b.className='letter '+cls; b.textContent=x; b.dataset.val=x;
+   b.onclick=()=>choose(x);
+   root.appendChild(b);
+ });
+}
+function update(){
+ document.getElementById('cTile').textContent=c;
+ document.getElementById('vTile').textContent=v;
+ const syl=c+v;
+ document.getElementById('answer').textContent=syl;
+ document.getElementById('read').textContent='Baca: '+syl;
+ document.getElementById('challenge').innerHTML='Tantangan: coba baca <b>'+syl+'</b>!';
+ document.querySelectorAll('#cons button').forEach(b=>b.classList.toggle('active',b.dataset.val===c));
+ document.querySelectorAll('#vowels button').forEach(b=>b.classList.toggle('active',b.dataset.val===v));
+}
+makeButtons(consonants,document.getElementById('cons'),'',
+ x=>{c=x;update()});
+makeButtons(vowels,document.getElementById('vowels'),'v',
+ x=>{v=x;update()});
+
+document.getElementById('random').onclick=()=>{
+ c=consonants[Math.floor(Math.random()*consonants.length)];
+ v=vowels[Math.floor(Math.random()*vowels.length)];
+ update();
+};
+document.getElementById('speak').onclick=()=>{
+ const u=new SpeechSynthesisUtterance(c+v);
+ u.lang='id-ID'; u.rate=.65;
+ speechSynthesis.cancel(); speechSynthesis.speak(u);
+};
+update();
+</script>
+<a id="homeNav" href="index.html">🏠 Taman Bermain</a></body>
+</html>
